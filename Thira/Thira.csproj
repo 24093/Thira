@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Alkl.Thira</AssemblyName>
+    <RootNamespace>Alkl.Thira</RootNamespace>
+  </PropertyGroup>
+
+</Project>
