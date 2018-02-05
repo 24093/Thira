@@ -1,6 +1,8 @@
-﻿namespace Alkl.Thira.DomainObjects
+﻿using System;
+
+namespace Alkl.Thira.DomainObjects
 {
-    public class Position
+    public class Position : IDeepCloneable<Position>
     {
         public readonly uint Row;
 
@@ -12,11 +14,21 @@
             Column = column;
         }
 
+        public Position DeepClone()
+        {
+            return new Position(Row, Column);
+        }
+
         public override string ToString()
         {
             return string.Format("({0}, {1})", Row, Column);
         }
 
+        public static implicit operator Position((uint, uint) rowColumnTuple)
+        {
+            return new Position(rowColumnTuple.Item1, rowColumnTuple.Item2);
+        }
+        
         public bool IsNeighbor(Position possibleNeighbor)
         {
             if (possibleNeighbor.Row != Row + 1 && possibleNeighbor.Row != Row - 1 && possibleNeighbor.Row != Row)

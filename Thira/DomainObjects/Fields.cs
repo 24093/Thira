@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Fields : IEnumerable<Field>
+    public class Fields : IEnumerable<Field>, IDeepCloneable<Fields>
     {
         private readonly List<Field> _fields = new List<Field>();
 
@@ -18,9 +18,14 @@ namespace Alkl.Thira.DomainObjects
             {
                 for (uint column = 0; column < columns; ++column)
                 {
-                    _fields.Add(new Field(row, column));
+                    _fields.Add(new Field((row, column)));
                 }
             }
+        }
+
+        protected Fields(IEnumerable<Field> fields)
+        {
+            _fields = new List<Field>(fields);
         }
 
         public IEnumerator<Field> GetEnumerator()
@@ -31,6 +36,11 @@ namespace Alkl.Thira.DomainObjects
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public Fields DeepClone()
+        {
+            return new Fields(_fields.Select(f => f.DeepClone()));
         }
     }
 }

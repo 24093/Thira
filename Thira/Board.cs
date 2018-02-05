@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
@@ -20,7 +21,15 @@ namespace Alkl.Thira
             _fields = new Fields(5, 5);
         }
 
-        public void PlaceInitialBuilder(Player player, Position builderPosition)
+        public Fields Fields => _fields.DeepClone();
+
+        public void PlaceInitialBuilders(Player player, Position builder1Position, Position builder2Position)
+        {
+            PlaceInitialBuilder(player, builder1Position);
+            PlaceInitialBuilder(player, builder2Position);
+        }
+
+        private void PlaceInitialBuilder(Player player, Position builderPosition)
         {
             var fieldsContainingPlayerBuilder = _fields.Where(f => f.Builder?.Owner.Name == player.Name);
 

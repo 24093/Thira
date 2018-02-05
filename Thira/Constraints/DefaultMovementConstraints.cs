@@ -42,5 +42,10 @@ namespace Alkl.Thira.Constraints
                 throw new NoBuilderOnSourceFieldException(player, fieldFrom, fieldTo);
             }
         }
+
+        public IMovementConstraints DeepClone()
+        {
+            return new DefaultMovementConstraints();
+        }
     }
 }

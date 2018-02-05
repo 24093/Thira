@@ -3,7 +3,7 @@ using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira.Exceptions
 {
-    public abstract class InvalidMoveException : Exception
+    public abstract class InvalidMoveException : InvalidOperationException
     {
         public readonly Player Player;
 
