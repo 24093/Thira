@@ -20,13 +20,10 @@ namespace Alkl.Thira.DomainObjects
             EnsureKeyExsits(level);
             _items[level] += count;
         }
-        
+
         private void EnsureKeyExsits(uint key)
         {
-            if (!_items.ContainsKey(key))
-            {
-                _items.Add(key, 0);
-            }
+            if (!_items.ContainsKey(key)) _items.Add(key, 0);
         }
     }
 }

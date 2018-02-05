@@ -1,25 +1,25 @@
-﻿using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions;
-using System;
+﻿using System;
 using System.Linq;
+using Alkl.Thira.DomainObjects;
+using Alkl.Thira.Exceptions;
 
 namespace Alkl.Thira
 {
     public class Board
     {
         private Fields _fields;
-        
+
         public Board()
         {
             Reset();
         }
 
+        public Fields Fields => _fields.DeepClone();
+
         public void Reset()
         {
             _fields = new Fields(5, 5);
         }
-
-        public Fields Fields => _fields.DeepClone();
 
         public void PlaceInitialBuilders(Player player, Position builder1Position, Position builder2Position)
         {
@@ -31,21 +31,15 @@ namespace Alkl.Thira
         {
             var fieldsContainingPlayerBuilder = _fields.Where(f => f.Builder?.Owner.Name == player.Name);
 
-            if (fieldsContainingPlayerBuilder.Count() == 2)
-            {
-                throw new MaximumNumberOfBuildersExceededException();
-            }
+            if (fieldsContainingPlayerBuilder.Count() == 2) throw new MaximumNumberOfBuildersExceededException();
 
             var field = _fields[builderPosition];
-            
-            if (field.Builder != null)
-            {
-                throw new FieldContainsBuilderException();
-            }
+
+            if (field.Builder != null) throw new FieldContainsBuilderException();
 
             field.Builder = new Builder(player);
         }
-        
+
         public void MoveBuilder(Player player, Position from, Position to)
         {
             var fieldFrom = _fields[from];

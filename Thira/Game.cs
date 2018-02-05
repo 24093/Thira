@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Alkl.Thira.Constraints;
+﻿using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira
 {
     public class Game
     {
-        public Board Board { get; }
-
-        private Stories _stories;
-
+        private readonly Stories _stories;
         private Player _player1;
 
         private Player _player2;
@@ -28,5 +22,7 @@ namespace Alkl.Thira
             _stories.AddStories(0, 14);
             _stories.AddStories(0, 18);
         }
+
+        public Board Board { get; }
     }
 }

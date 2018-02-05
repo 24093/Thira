@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace Alkl.Thira.DomainObjects
+﻿namespace Alkl.Thira.DomainObjects
 {
     public class Position : IDeepCloneable<Position>
     {
-        public readonly uint Row;
-
         public readonly uint Column;
+        public readonly uint Row;
 
         public Position(uint row, uint column)
         {
@@ -28,28 +25,22 @@ namespace Alkl.Thira.DomainObjects
         {
             return new Position(rowColumnTuple.Item1, rowColumnTuple.Item2);
         }
-        
+
         public bool IsNeighbor(Position possibleNeighbor)
         {
-            if (possibleNeighbor.Row != Row + 1 && 
+            if (possibleNeighbor.Row != Row + 1 &&
                 possibleNeighbor.Row != Row - 1 &&
                 possibleNeighbor.Row != Row)
-            {
                 return false;
-            }
 
-            if (possibleNeighbor.Column != Column + 1 && 
+            if (possibleNeighbor.Column != Column + 1 &&
                 possibleNeighbor.Column != Column - 1 &&
                 possibleNeighbor.Column != Column)
-            {
                 return false;
-            }
 
-            if (possibleNeighbor.Row == Row && 
+            if (possibleNeighbor.Row == Row &&
                 possibleNeighbor.Column == Column)
-            {
                 return false;
-            }
 
             return true;
         }

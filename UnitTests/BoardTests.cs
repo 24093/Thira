@@ -47,8 +47,9 @@ namespace Alkl.Thira.UnitTests
             var builder = board.Fields[1, 2].Builder;
             board.MoveBuilder(_player1, (1, 2), (2, 2));
 
-            Assert.AreEqual(builder, board.Fields[2, 2].Builder);
             Assert.IsNull(board.Fields[1, 2].Builder);
+            Assert.AreEqual(builder, board.Fields[2, 2].Builder);
+
         }
     }
 }

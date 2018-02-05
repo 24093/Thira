@@ -1,6 +1,5 @@
 ﻿namespace Alkl.Thira.DomainObjects
 {
-
     public class Field : IDeepCloneable<Field>
     {
         public readonly Position Position;
@@ -13,7 +12,7 @@
         {
             Position = position;
         }
-        
+
         public Field DeepClone()
         {
             return new Field(Position.DeepClone())
