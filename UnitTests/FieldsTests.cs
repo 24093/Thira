@@ -39,7 +39,7 @@ namespace Alkl.Thira.UnitTests
                 for (uint column = 0; column < columns; ++column)
                 {
                     Assert.AreNotEqual(fields[row, column], copy[row, column]);
-                    Assert.AreEqual(fields[row, column].Position, copy[row, column]);
+                    Assert.AreEqual(fields[row, column].Position, copy[row, column].Position);
                 }
             }
         }

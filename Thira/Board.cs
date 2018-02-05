@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Alkl.Thira.Constraints;
-using Alkl.Thira.DomainObjects;
+﻿using Alkl.Thira.DomainObjects;
 using Alkl.Thira.Exceptions;
+using System;
+using System.Linq;
 
 namespace Alkl.Thira
 {
@@ -60,7 +58,7 @@ namespace Alkl.Thira
             }
             catch (InvalidMoveException ex)
             {
-                throw new Exception($"Invalid move from {from} to {to} for player {player}: {ex}", ex);
+                throw new Exception($"Invalid move from {from} to {to} for player {player}: {ex.GetType().Name}", ex);
             }
 
             fieldTo.Builder = fieldFrom.Builder;

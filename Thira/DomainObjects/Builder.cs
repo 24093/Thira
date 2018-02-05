@@ -3,7 +3,7 @@
     public class Builder : IDeepCloneable<Builder>
     {
         public readonly Player Owner;
-
+        
         public Builder(Player owner)
         {
             Owner = owner;

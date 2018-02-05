@@ -7,8 +7,6 @@ namespace Alkl.Thira.Constraints
     {
         public virtual void CheckMove(Player player, Field fieldFrom, Field fieldTo)
         {
-            CheckArguments(player, fieldFrom, fieldTo);
-
             if (fieldFrom.Builder.Owner.Name != player.Name)
             {
                 throw new BuilderDoesNotBelongToPlayerException(player, fieldFrom, fieldTo);
@@ -17,7 +15,12 @@ namespace Alkl.Thira.Constraints
             if (!fieldFrom.Position.IsNeighbor(fieldTo.Position))
             {
                 throw new DestinationFieldIsNotNeighborOfSourceFieldException(player, fieldFrom, fieldTo);
-            }                        
+            }
+
+            if (fieldTo.Builder != null)
+            {
+                throw new DestinationFieldIsNotEmptyException(player, fieldFrom, fieldTo);
+            }
         }
 
         public void CheckArguments(Player player, Field fieldFrom, Field fieldTo)

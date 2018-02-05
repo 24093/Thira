@@ -19,8 +19,8 @@ namespace Alkl.Thira
         public Game(IMovementConstraints player1MovementConstraints, IMovementConstraints player2MovementConstraints)
         {
             Board = new Board();
-            _player1 = new Player(player1MovementConstraints);
-            _player2 = new Player(player2MovementConstraints);
+            _player1 = new Player(null, player1MovementConstraints);
+            _player2 = new Player(null, player2MovementConstraints);
 
             _stories = new Stories();
             _stories.AddStories(0, 22);

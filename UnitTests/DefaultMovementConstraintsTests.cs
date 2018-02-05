@@ -16,11 +16,13 @@ namespace Alkl.Thira.UnitTests
         public void Initialize()
         {
             _fields = new Fields(5, 5);
-            _player1 = new Player(new DefaultMovementConstraints());
-            _player2 = new Player(new DefaultMovementConstraints());
+            _player1 = new Player(null, new DefaultMovementConstraints());
+            _player2 = new Player(null, new DefaultMovementConstraints());
 
             _fields[0, 0].Builder = new Builder(_player1);
+            _fields[1, 0].Builder = new Builder(_player1);
             _fields[3, 3].Builder = new Builder(_player2);
+            _fields[2, 0].Builder = new Builder(_player2);
         }
 
         [TestMethod]
@@ -58,6 +60,13 @@ namespace Alkl.Thira.UnitTests
 
             Assert.ThrowsException<DestinationFieldIsNotNeighborOfSourceFieldException>(() =>
                 _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[0, 1]));
+        }
+
+        [TestMethod]
+        public void TestCheckMoveBusy()
+        {
+            Assert.ThrowsException<DestinationFieldIsNotEmptyException>(() =>
+                _player1.MovementConstraints.CheckMove(_player1, _fields[1, 0], _fields[2, 0]));
         }
     }
 }

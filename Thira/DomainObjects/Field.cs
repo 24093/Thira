@@ -18,7 +18,7 @@
         {
             return new Field(Position.DeepClone())
             {
-                Builder = Builder.DeepClone(),
+                Builder = Builder?.DeepClone(),
                 StoryLevel = StoryLevel
             };
         }

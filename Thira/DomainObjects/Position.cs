@@ -31,22 +31,43 @@ namespace Alkl.Thira.DomainObjects
         
         public bool IsNeighbor(Position possibleNeighbor)
         {
-            if (possibleNeighbor.Row != Row + 1 && possibleNeighbor.Row != Row - 1 && possibleNeighbor.Row != Row)
+            if (possibleNeighbor.Row != Row + 1 && 
+                possibleNeighbor.Row != Row - 1 &&
+                possibleNeighbor.Row != Row)
             {
                 return false;
             }
 
-            if (possibleNeighbor.Column != Column + 1 && possibleNeighbor.Column != Column - 1 && possibleNeighbor.Column != Column)
+            if (possibleNeighbor.Column != Column + 1 && 
+                possibleNeighbor.Column != Column - 1 &&
+                possibleNeighbor.Column != Column)
             {
                 return false;
             }
 
-            if (possibleNeighbor.Row == Row && possibleNeighbor.Column == Column)
+            if (possibleNeighbor.Row == Row && 
+                possibleNeighbor.Column == Column)
             {
                 return false;
             }
 
             return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var position = obj as Position;
+            return position != null &&
+                   Row == position.Row &&
+                   Column == position.Column;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 240067226;
+            hashCode = hashCode * -1521134295 + Row.GetHashCode();
+            hashCode = hashCode * -1521134295 + Column.GetHashCode();
+            return hashCode;
         }
     }
 }
