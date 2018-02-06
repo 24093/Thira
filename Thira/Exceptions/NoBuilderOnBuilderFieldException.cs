@@ -3,9 +3,9 @@ using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira.Exceptions
 {
-    internal class TargetFieldIsNotNeighborOfBuilderFieldException : BuildException
+    internal class NoBuilderOnBuilderFieldException : BuildException
     {
-        public TargetFieldIsNotNeighborOfBuilderFieldException(Field builderField, Field targetField, string message = null,
+        public NoBuilderOnBuilderFieldException(Field builderField, Field targetField, string message = null,
             Exception innerException = null)
             : base(builderField, targetField, message, innerException)
         {

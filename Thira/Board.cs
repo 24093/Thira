@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
 using Alkl.Thira.Exceptions;
 
@@ -9,6 +10,7 @@ namespace Alkl.Thira
     public class Board
     {
         private Fields _fields;
+        private List<Player> _players = new List<Player>();
 
         public Board()
         {
@@ -20,12 +22,19 @@ namespace Alkl.Thira
             _fields = new Fields(5, 5);
         }
 
-        public IEnumerable<Guid> PlaceInitialBuilders(Player player, Position builder1Position, Position builder2Position)
+        public Guid AddPlayer(string name)
+        {
+            var player = new Player(name, new DefaultMovementConstraints(), new DefaultBuildConstraints());
+            _players.Add(player);
+            return player.Id;
+        }
+
+        public IEnumerable<Guid> PlaceInitialBuilders(Guid playerId, Position builder1Position, Position builder2Position)
         {
             return new[]
             {
-                PlaceInitialBuilder(player, builder1Position),
-                PlaceInitialBuilder(player, builder2Position)
+                PlaceInitialBuilder(GetPlayer(playerId), builder1Position),
+                PlaceInitialBuilder(GetPlayer(playerId), builder2Position)
             };
         }
 
@@ -44,7 +53,7 @@ namespace Alkl.Thira
             return field.Builder.Id;
         }
 
-        public Guid MoveBuilder(Position from, Position to)
+        public void MoveBuilder(Position from, Position to)
         {
             var fieldFrom = _fields[from];
             var fieldTo = _fields[to];
@@ -61,23 +70,23 @@ namespace Alkl.Thira
 
             fieldTo.Builder = fieldFrom.Builder;
             fieldFrom.Builder = null;
-
-            return fieldTo.Builder.Id;
         }
 
-        public void Build(Builder builder, Position position)
+        public void Build(Position builderPosition, Position position)
         {
-            var builderField = _fields.SingleOrDefault(f => f.Builder?.Id == builder.Id);
+            var builderField = _fields[builderPosition];
             var targetField = _fields[position];
 
             try
             {
-                builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
+                builderField.Builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
             }
-            catch (Exception ex)
+            catch (BuildException ex)
             {
-                
+                throw new Exception($"Invalid build on {position} for player {builderField.Builder.Owner}: {ex.GetType().Name}", ex);
             }
+
+            targetField.IncreaseStoryLevel();
         }
 
         public Guid? GetBuilderId(Position position)
@@ -88,6 +97,11 @@ namespace Alkl.Thira
         public Guid? GetPlayerId(Position position)
         {
             return _fields[position]?.Builder?.Owner.Id;
+        }
+
+        private Player GetPlayer(Guid id)
+        {
+            return _players.SingleOrDefault(p => p.Id == id);
         }
     }
 }

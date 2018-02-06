@@ -2,8 +2,8 @@
 
 namespace Alkl.Thira.Constraints
 {
-    public interface IBuildConstraints : IDeepCloneable<IBuildConstraints>
+    internal interface IBuildConstraints : IDeepCloneable<IBuildConstraints>
     {
-        void CheckBuild(Field builderField, Field targetGield);
+        void CheckBuild(Field builderField, Field targetField);
     }
 }

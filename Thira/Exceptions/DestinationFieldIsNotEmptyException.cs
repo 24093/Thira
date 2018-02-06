@@ -3,10 +3,9 @@ using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira.Exceptions
 {
-    public class DestinationFieldIsNotEmptyException : InvalidMoveException
+    internal class DestinationFieldIsNotEmptyException : InvalidMoveException
     {
-        public DestinationFieldIsNotEmptyException(Field from = null, Field to = null,
-            string message = null, Exception innerException = null)
+        public DestinationFieldIsNotEmptyException(Field from, Field to, string message = null, Exception innerException = null)
             : base(from, to, message, innerException)
         {
         }

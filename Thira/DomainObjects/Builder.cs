@@ -2,7 +2,7 @@
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Builder : UniqueObject, IDeepCloneable<Builder>
+    internal class Builder : UniqueObject, IDeepCloneable<Builder>
     {
         public readonly Player Owner;
 

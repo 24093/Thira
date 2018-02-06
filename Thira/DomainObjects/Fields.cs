@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Fields : IEnumerable<Field>, IDeepCloneable<Fields>
+    internal class Fields : IEnumerable<Field>, IDeepCloneable<Fields>
     {
         private readonly List<Field> _fields = new List<Field>();
 

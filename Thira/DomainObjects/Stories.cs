@@ -2,7 +2,7 @@
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Stories
+    internal class Stories
     {
         private readonly Dictionary<uint, uint> _items = new Dictionary<uint, uint>();
 

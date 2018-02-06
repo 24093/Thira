@@ -3,7 +3,7 @@ using Alkl.Thira.Exceptions;
 
 namespace Alkl.Thira.Constraints
 {
-    public class DefaultMovementConstraints : IMovementConstraints
+    internal class DefaultMovementConstraints : IMovementConstraints
     {
         public virtual void CheckMove(Field fieldFrom, Field fieldTo)
         {

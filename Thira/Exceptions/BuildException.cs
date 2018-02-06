@@ -3,7 +3,7 @@ using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira.Exceptions
 {
-    public abstract class BuildException : InvalidOperationException
+    internal abstract class BuildException : InvalidOperationException
     {
         public readonly Field BuilderField;
         public readonly Field TargetField;

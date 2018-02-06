@@ -3,7 +3,7 @@ using Alkl.Thira.Constraints;
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Player : UniqueObject, IDeepCloneable<Player>
+    internal class Player : UniqueObject, IDeepCloneable<Player>
     {
         public readonly IMovementConstraints MovementConstraints;
         public readonly IBuildConstraints BuildConstraints;

@@ -3,14 +3,25 @@ using Alkl.Thira.Exceptions;
 
 namespace Alkl.Thira.Constraints
 {
-    public class DefaultBuildConstraints : IBuildConstraints
+    internal class DefaultBuildConstraints : IBuildConstraints
     {
-        public void CheckBuild(Field builderField, Field targetGield)
+        public void CheckBuild(Field builderField, Field targetField)
         {
-            if (!builderField.Position.IsNeighbor(targetGield.Position))
+            CheckArguments(builderField, targetField);
+
+            if (!builderField.Position.IsNeighbor(targetField.Position))
             {
-                throw new TargetFieldIsNotNeighborOfBuilderFieldException(builderField, targetGield);
+                throw new TargetFieldIsNotNeighborOfBuilderFieldException(builderField, targetField);
             }
+        }
+
+        protected void CheckArguments(Field builderField, Field targetField)
+        {
+            if (builderField == null) throw new BuilderFieldDoesNotExistException(null, targetField);
+
+            if (targetField == null) throw new TargetFieldDoesNotExistException(builderField, null);
+
+            if (targetField.Builder == null) throw new NoBuilderOnBuilderFieldException(builderField, targetField);
         }
 
         public IBuildConstraints DeepClone()

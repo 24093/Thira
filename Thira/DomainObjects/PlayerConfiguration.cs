@@ -2,7 +2,7 @@
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class PlayerConfiguration
+    internal class PlayerConfiguration
     {
         public string Name;
         public IMovementConstraints MovementConstraints = new DefaultMovementConstraints();
