@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Alkl.Thira.DomainObjects;
 using Alkl.Thira.Exceptions;
@@ -13,23 +14,24 @@ namespace Alkl.Thira
         {
             Reset();
         }
-
-        public Fields Fields => _fields.DeepClone();
-
+        
         public void Reset()
         {
             _fields = new Fields(5, 5);
         }
 
-        public void PlaceInitialBuilders(Player player, Position builder1Position, Position builder2Position)
+        public IEnumerable<Guid> PlaceInitialBuilders(Player player, Position builder1Position, Position builder2Position)
         {
-            PlaceInitialBuilder(player, builder1Position);
-            PlaceInitialBuilder(player, builder2Position);
+            return new[]
+            {
+                PlaceInitialBuilder(player, builder1Position),
+                PlaceInitialBuilder(player, builder2Position)
+            };
         }
 
-        private void PlaceInitialBuilder(Player player, Position builderPosition)
+        private Guid PlaceInitialBuilder(Player player, Position builderPosition)
         {
-            var fieldsContainingPlayerBuilder = _fields.Where(f => f.Builder?.Owner.Name == player.Name);
+            var fieldsContainingPlayerBuilder = _fields.Where(f => f.Builder?.Owner.Id == player.Id);
 
             if (fieldsContainingPlayerBuilder.Count() == 2) throw new MaximumNumberOfBuildersExceededException();
 
@@ -38,25 +40,39 @@ namespace Alkl.Thira
             if (field.Builder != null) throw new FieldContainsBuilderException();
 
             field.Builder = new Builder(player);
+
+            return field.Builder.Id;
         }
 
-        public void MoveBuilder(Player player, Position from, Position to)
+        public Guid MoveBuilder(Position from, Position to)
         {
             var fieldFrom = _fields[from];
             var fieldTo = _fields[to];
+            var builder = _fields[from].Builder;
 
             try
             {
-                player.MovementConstraints.CheckArguments(player, fieldFrom, fieldTo);
-                player.MovementConstraints.CheckMove(player, fieldFrom, fieldTo);
+                builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo);
             }
             catch (InvalidMoveException ex)
             {
-                throw new Exception($"Invalid move from {from} to {to} for player {player}: {ex.GetType().Name}", ex);
+                throw new Exception($"Invalid move from {from} to {to} for player {builder.Owner}: {ex.GetType().Name}", ex);
             }
 
             fieldTo.Builder = fieldFrom.Builder;
             fieldFrom.Builder = null;
+
+            return fieldTo.Builder.Id;
+        }
+
+        public Guid? GetBuilderId(Position position)
+        {
+            return _fields[position]?.Builder?.Id;
+        }
+
+        public Guid? GetPlayerId(Position position)
+        {
+            return _fields[position]?.Builder?.Owner.Id;
         }
     }
 }

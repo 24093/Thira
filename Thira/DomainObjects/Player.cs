@@ -3,20 +3,27 @@ using Alkl.Thira.Constraints;
 
 namespace Alkl.Thira.DomainObjects
 {
-    public class Player : IDeepCloneable<Player>
+    public class Player : UniqueObject, IDeepCloneable<Player>
     {
         public readonly IMovementConstraints MovementConstraints;
         public readonly string Name;
-
+        
         public Player(string name, IMovementConstraints movementConstraints)
         {
-            Name = name ?? Guid.NewGuid().ToString();
+            Name = name ?? Id.ToString();
+            MovementConstraints = movementConstraints;
+        }
+
+        private Player(string name, IMovementConstraints movementConstraints, Guid id)
+            : base(id)
+        {
+            Name = name ?? Id.ToString();
             MovementConstraints = movementConstraints;
         }
 
         public Player DeepClone()
         {
-            return new Player(Name, MovementConstraints.DeepClone());
+            return new Player(Name, MovementConstraints.DeepClone(), Id);
         }
 
         protected bool Equals(Player other)

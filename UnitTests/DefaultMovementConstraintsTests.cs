@@ -28,45 +28,40 @@ namespace Alkl.Thira.UnitTests
         [TestMethod]
         public void TestCheckArguments()
         {
-            _player1.MovementConstraints.CheckArguments(_player1, _fields[0, 0], _fields[0, 1]);
-
-            Assert.ThrowsException<PlayerDoesNotExistException>(() =>
-                _player1.MovementConstraints.CheckArguments(null, _fields[0, 0], _fields[0, 1]));
-
             Assert.ThrowsException<SourceFieldDoesNotExistException>(() =>
-                _player1.MovementConstraints.CheckArguments(_player1, null, _fields[0, 1]));
+                _player1.MovementConstraints.CheckMove(null, _fields[0, 1]));
 
             Assert.ThrowsException<DestinationFieldDoesNotExistException>(() =>
-                _player1.MovementConstraints.CheckArguments(_player1, _fields[0, 0], null));
+                _player1.MovementConstraints.CheckMove(_fields[0, 0], null));
 
             Assert.ThrowsException<NoBuilderOnSourceFieldException>(() =>
-                _player1.MovementConstraints.CheckArguments(_player1, _fields[2, 2], _fields[0, 1]));
+                _player1.MovementConstraints.CheckMove(_fields[2, 2], _fields[0, 1]));
         }
 
         [TestMethod]
         public void TestCheckMoveNeighbor()
         {
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[3, 4]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[4, 4]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[4, 3]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[4, 2]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[3, 2]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[2, 2]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[2, 3]);
-            _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[2, 4]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[3, 4]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[4, 4]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[4, 3]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[4, 2]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[3, 2]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[2, 2]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[2, 3]);
+            _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[2, 4]);
 
             Assert.ThrowsException<DestinationFieldIsNotNeighborOfSourceFieldException>(() =>
-                _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[1, 1]));
+                _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[1, 1]));
 
             Assert.ThrowsException<DestinationFieldIsNotNeighborOfSourceFieldException>(() =>
-                _player2.MovementConstraints.CheckMove(_player2, _fields[3, 3], _fields[0, 1]));
+                _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[0, 1]));
         }
 
         [TestMethod]
         public void TestCheckMoveBusy()
         {
             Assert.ThrowsException<DestinationFieldIsNotEmptyException>(() =>
-                _player1.MovementConstraints.CheckMove(_player1, _fields[1, 0], _fields[2, 0]));
+                _player1.MovementConstraints.CheckMove(_fields[1, 0], _fields[2, 0]));
         }
     }
 }

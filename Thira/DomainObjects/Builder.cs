@@ -1,6 +1,8 @@
-﻿namespace Alkl.Thira.DomainObjects
+﻿using System;
+
+namespace Alkl.Thira.DomainObjects
 {
-    public class Builder : IDeepCloneable<Builder>
+    public class Builder : UniqueObject, IDeepCloneable<Builder>
     {
         public readonly Player Owner;
 
@@ -9,9 +11,15 @@
             Owner = owner;
         }
 
+        private Builder(Player owner, Guid id)
+            : base(id)
+        {
+            Owner = owner;
+        }
+
         public Builder DeepClone()
         {
-            return new Builder(Owner.DeepClone());
+            return new Builder(Owner.DeepClone(), Id);
         }
     }
 }

@@ -5,9 +5,9 @@ namespace Alkl.Thira.Exceptions
 {
     public class DestinationFieldDoesNotExistException : InvalidMoveException
     {
-        public DestinationFieldDoesNotExistException(Player player = null, Field from = null, Field to = null,
+        public DestinationFieldDoesNotExistException(Field from = null, Field to = null,
             string message = null, Exception innerException = null)
-            : base(player, from, to, message, innerException)
+            : base(from, to, message, innerException)
         {
         }
     }

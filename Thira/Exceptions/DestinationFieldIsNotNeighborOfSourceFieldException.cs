@@ -5,10 +5,9 @@ namespace Alkl.Thira.Exceptions
 {
     public class DestinationFieldIsNotNeighborOfSourceFieldException : InvalidMoveException
     {
-        public DestinationFieldIsNotNeighborOfSourceFieldException(Player player = null, Field from = null,
-            Field to = null,
+        public DestinationFieldIsNotNeighborOfSourceFieldException(Field from = null, Field to = null,
             string message = null, Exception innerException = null)
-            : base(player, from, to, message, innerException)
+            : base(from, to, message, innerException)
         {
         }
     }
