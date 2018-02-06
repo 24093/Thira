@@ -65,6 +65,21 @@ namespace Alkl.Thira
             return fieldTo.Builder.Id;
         }
 
+        public void Build(Builder builder, Position position)
+        {
+            var builderField = _fields.SingleOrDefault(f => f.Builder?.Id == builder.Id);
+            var targetField = _fields[position];
+
+            try
+            {
+                builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
+
         public Guid? GetBuilderId(Position position)
         {
             return _fields[position]?.Builder?.Id;

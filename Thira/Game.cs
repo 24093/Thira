@@ -1,20 +1,20 @@
-﻿using Alkl.Thira.Constraints;
-using Alkl.Thira.DomainObjects;
+﻿using Alkl.Thira.DomainObjects;
 
 namespace Alkl.Thira
 {
     public class Game
     {
+        private readonly Board _board;
         private readonly Stories _stories;
         private Player _player1;
-
         private Player _player2;
 
-        public Game(IMovementConstraints player1MovementConstraints, IMovementConstraints player2MovementConstraints)
+        public Game(GameConfiguration config)
         {
-            Board = new Board();
-            _player1 = new Player(null, player1MovementConstraints);
-            _player2 = new Player(null, player2MovementConstraints);
+            _board = new Board();
+
+            _player1 = new Player("Alice", config.Player1.MovementConstraints, config.Player1.BuildConstraints);
+            _player2 = new Player("Bob", config.Player2.MovementConstraints, config.Player2.BuildConstraints);
 
             _stories = new Stories();
             _stories.AddStories(0, 22);
@@ -22,7 +22,5 @@ namespace Alkl.Thira
             _stories.AddStories(0, 14);
             _stories.AddStories(0, 18);
         }
-
-        public Board Board { get; }
     }
 }

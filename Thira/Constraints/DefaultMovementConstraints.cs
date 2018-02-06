@@ -19,7 +19,7 @@ namespace Alkl.Thira.Constraints
         {
             if (fieldFrom == null) throw new SourceFieldDoesNotExistException(null, fieldTo);
 
-            if (fieldTo == null) throw new DestinationFieldDoesNotExistException(fieldFrom, fieldTo);
+            if (fieldTo == null) throw new DestinationFieldDoesNotExistException(fieldFrom, null);
 
             if (fieldFrom.Builder == null) throw new NoBuilderOnSourceFieldException(fieldFrom, fieldTo);
         }

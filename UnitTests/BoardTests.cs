@@ -13,8 +13,8 @@ namespace Alkl.Thira.UnitTests
         [TestInitialize]
         public void Initialize()
         {
-            _player1 = new Player(null, new DefaultMovementConstraints());
-            _player2 = new Player(null, new DefaultMovementConstraints());
+            _player1 = new Player("Alice", new DefaultMovementConstraints(), new DefaultBuildConstraints());
+            _player2 = new Player("Bob", new DefaultMovementConstraints(), new DefaultBuildConstraints());
         }
 
         [TestMethod]

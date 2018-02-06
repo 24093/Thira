@@ -6,24 +6,27 @@ namespace Alkl.Thira.DomainObjects
     public class Player : UniqueObject, IDeepCloneable<Player>
     {
         public readonly IMovementConstraints MovementConstraints;
+        public readonly IBuildConstraints BuildConstraints;
         public readonly string Name;
         
-        public Player(string name, IMovementConstraints movementConstraints)
+        public Player(string name, IMovementConstraints movementConstraints, IBuildConstraints buildConstraints)
         {
             Name = name ?? Id.ToString();
             MovementConstraints = movementConstraints;
+            BuildConstraints = buildConstraints;
         }
 
-        private Player(string name, IMovementConstraints movementConstraints, Guid id)
+        private Player(string name, IMovementConstraints movementConstraints, IBuildConstraints buildConstraints, Guid id)
             : base(id)
         {
             Name = name ?? Id.ToString();
             MovementConstraints = movementConstraints;
+            BuildConstraints = buildConstraints;
         }
 
         public Player DeepClone()
         {
-            return new Player(Name, MovementConstraints.DeepClone(), Id);
+            return new Player(Name, MovementConstraints.DeepClone(), BuildConstraints.DeepClone(), Id);
         }
 
         protected bool Equals(Player other)

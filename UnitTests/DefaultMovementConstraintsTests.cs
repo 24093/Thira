@@ -16,8 +16,8 @@ namespace Alkl.Thira.UnitTests
         public void Initialize()
         {
             _fields = new Fields(5, 5);
-            _player1 = new Player(null, new DefaultMovementConstraints());
-            _player2 = new Player(null, new DefaultMovementConstraints());
+            _player1 = new Player("Alice", new DefaultMovementConstraints(), new DefaultBuildConstraints());
+            _player2 = new Player("Bob", new DefaultMovementConstraints(), new DefaultBuildConstraints());
 
             _fields[0, 0].Builder = new Builder(_player1);
             _fields[1, 0].Builder = new Builder(_player1);
