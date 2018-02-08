@@ -26,9 +26,9 @@ namespace Alkl.Thira.Constraints
         {
             if (builderField == null) throw new BuilderFieldDoesNotExistException(null, targetField);
 
-            if (targetField == null) throw new TargetFieldDoesNotExistException(builderField, null);
+            if (builderField.Builder == null) throw new NoBuilderOnBuilderFieldException(builderField, targetField);
 
-            if (targetField.Builder == null) throw new NoBuilderOnBuilderFieldException(builderField, targetField);
+            if (targetField == null) throw new TargetFieldDoesNotExistException(builderField, null);
         }
     }
 }

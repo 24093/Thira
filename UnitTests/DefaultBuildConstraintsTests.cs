@@ -26,17 +26,41 @@ namespace Alkl.Thira.UnitTests
             _fields[2, 0].Builder = new Builder(_player2);
         }
 
+        #region Exceptions
+
         [TestMethod]
-        public void TestCheckArguments()
+        public void TestBuilderFieldDoesNotExistException()
         {
             Assert.ThrowsException<BuilderFieldDoesNotExistException>(() =>
                 _player1.BuildConstraints.CheckBuild(null, _fields[1, 0]));
+        }
 
+        [TestMethod]
+        public void TestTargetFieldDoesNotExistException()
+        {
             Assert.ThrowsException<TargetFieldDoesNotExistException>(() =>
                 _player1.BuildConstraints.CheckBuild(_fields[0, 0], null));
+        }
 
+        [TestMethod]
+        public void TestNoBuilderOnBuilderFieldExceptionn()
+        {
             Assert.ThrowsException<NoBuilderOnBuilderFieldException>(() =>
                 _player1.BuildConstraints.CheckBuild(_fields[1, 1], _fields[1, 2]));
         }
+
+        [TestMethod]
+        public void TestTargetFieldIsNotNeighborOfBuilderFieldException()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TestTargetFieldContainsBuilderException()
+        {
+            Assert.Fail();
+        }
+
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
+using Alkl.Thira.Exceptions.BoardExceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Alkl.Thira.UnitTests
@@ -41,13 +42,35 @@ namespace Alkl.Thira.UnitTests
             Assert.IsNotNull(_board.GetBuilderId((2, 2)));
         }
 
-        [TestMethod]
-        public void TestBuilding()
-        {
-            Assert.ThrowsException<Exceptions.BuildExceptions.TargetFieldContainsBuilderException>(() =>
-                _board.Build((1, 2), (1, 3)));
-            Assert.AreEqual(0U, _board.GetLevel((1, 3)));
+        #region Exceptions
 
+        [TestMethod]
+        public void TestFieldContainsBuilderException()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TestInvalidBuildException()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TestInvalidMoveException()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TestLevelNotAvailableException()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void TestMaximumLevelReachedException()
+        {
             _board.Build((1, 2), (1, 1));
             Assert.AreEqual(1U, _board.GetLevel((1, 1)));
 
@@ -60,10 +83,17 @@ namespace Alkl.Thira.UnitTests
             _board.Build((1, 2), (1, 1));
             Assert.AreEqual(4U, _board.GetLevel((1, 1)));
 
-            //Assert.ThrowsException<>(() =>
-            //    _board.Build((1, 2), (1, 1)));
-            //Assert.AreEqual(4U, _board.GetLevel((1, 1)));
+            Assert.ThrowsException<MaximumLevelReachedException>(() =>
+                _board.Build((1, 2), (1, 1)));
+            Assert.AreEqual(4U, _board.GetLevel((1, 1)));
         }
 
+        [TestMethod]
+        public void TestNumberOfBuilderExceededException()
+        {
+            Assert.Fail();
+        }
+
+        #endregion
     }
 }

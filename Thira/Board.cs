@@ -11,11 +11,11 @@ namespace Alkl.Thira
 {
     public class Board
     {
-        private readonly List<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
         private Fields _fields;
         private List<uint> _levels;
         private uint _maxLevel;
-
+        
         public Board()
         {
             Reset();
@@ -23,6 +23,7 @@ namespace Alkl.Thira
 
         public void Reset()
         {
+            _players = new List<Player>();
             _fields = new Fields(5, 5);
             _levels = new List<uint> {0, 22, 18, 14, 18};
             _maxLevel = 4;
@@ -87,12 +88,12 @@ namespace Alkl.Thira
 
             if (targetField.Level.Equals(_maxLevel))
             {
-                throw new MaximumStoryLevelReachedException();
+                throw new MaximumLevelReachedException();
             }
 
-            if (_levels[level] == 0)
+            if (_levels[level + 1] == 0)
             {
-                throw new StoryNotAvailableException();
+                throw new LevelNotAvailableException();
             }
 
             try
@@ -104,6 +105,7 @@ namespace Alkl.Thira
                 throw new InvalidBuildException(null, ex);
             }
 
+            _levels[level + 1]--;
             targetField.Level++;
         }
 

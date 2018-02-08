@@ -26,21 +26,24 @@ namespace Alkl.Thira.UnitTests
             _fields[2, 0].Builder = new Builder(_player2);
         }
 
-        [TestMethod]
-        public void TestCheckArguments()
-        {
-            Assert.ThrowsException<SourceFieldDoesNotExistException>(() =>
-                _player1.MovementConstraints.CheckMove(null, _fields[0, 1]));
+        #region Exceptions
 
+        [TestMethod]
+        public void TestDestinationFieldDoesNotExistException()
+        {
             Assert.ThrowsException<DestinationFieldDoesNotExistException>(() =>
                 _player1.MovementConstraints.CheckMove(_fields[0, 0], null));
-
-            Assert.ThrowsException<NoBuilderOnSourceFieldException>(() =>
-                _player1.MovementConstraints.CheckMove(_fields[2, 2], _fields[0, 1]));
         }
 
         [TestMethod]
-        public void TestCheckMoveNeighbor()
+        public void TestDestinationFieldIsNotEmptyException()
+        {
+            Assert.ThrowsException<DestinationFieldIsNotEmptyException>(() =>
+                _player1.MovementConstraints.CheckMove(_fields[1, 0], _fields[2, 0]));
+        }
+
+        [TestMethod]
+        public void TestDestinationFieldIsNotNeighborOfSourceFieldException()
         {
             _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[3, 4]);
             _player2.MovementConstraints.CheckMove(_fields[3, 3], _fields[4, 4]);
@@ -59,10 +62,19 @@ namespace Alkl.Thira.UnitTests
         }
 
         [TestMethod]
-        public void TestCheckMoveBusy()
+        public void TestNoBuilderOnSourceFieldException()
         {
-            Assert.ThrowsException<DestinationFieldIsNotEmptyException>(() =>
-                _player1.MovementConstraints.CheckMove(_fields[1, 0], _fields[2, 0]));
+            Assert.ThrowsException<NoBuilderOnSourceFieldException>(() =>
+                _player1.MovementConstraints.CheckMove(_fields[2, 2], _fields[0, 1]));
         }
+
+        [TestMethod]
+        public void TestSourceFieldDoesNotExistException()
+        {
+            Assert.ThrowsException<SourceFieldDoesNotExistException>(() =>
+                _player1.MovementConstraints.CheckMove(null, _fields[0, 1]));
+        }
+
+        #endregion
     }
 }
