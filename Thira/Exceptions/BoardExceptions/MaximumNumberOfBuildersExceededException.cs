@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Alkl.Thira.Exceptions
+namespace Alkl.Thira.Exceptions.BoardExceptions
 {
-    internal class MaximumNumberOfBuildersExceededException : BoardException
+    public class MaximumNumberOfBuildersExceededException : BoardException
     {
         public MaximumNumberOfBuildersExceededException(string message = null, Exception innerException = null)
             : base(message, innerException)

@@ -5,10 +5,10 @@ namespace Alkl.Thira.DomainObjects
 {
     internal class Player : UniqueObject, IDeepCloneable<Player>
     {
-        public readonly IMovementConstraints MovementConstraints;
         public readonly IBuildConstraints BuildConstraints;
+        public readonly IMovementConstraints MovementConstraints;
         public readonly string Name;
-        
+
         public Player(string name, IMovementConstraints movementConstraints, IBuildConstraints buildConstraints)
         {
             Name = name ?? Id.ToString();
@@ -16,7 +16,8 @@ namespace Alkl.Thira.DomainObjects
             BuildConstraints = buildConstraints;
         }
 
-        private Player(string name, IMovementConstraints movementConstraints, IBuildConstraints buildConstraints, Guid id)
+        private Player(string name, IMovementConstraints movementConstraints, IBuildConstraints buildConstraints,
+            Guid id)
             : base(id)
         {
             Name = name ?? Id.ToString();

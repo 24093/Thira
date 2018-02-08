@@ -3,23 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions;
+using Alkl.Thira.Exceptions.BoardExceptions;
+using Alkl.Thira.Exceptions.BuildExceptions;
+using Alkl.Thira.Exceptions.MoveExceptions;
 
 namespace Alkl.Thira
 {
     public class Board
     {
+        private readonly List<Player> _players = new List<Player>();
         private Fields _fields;
-        private List<Player> _players = new List<Player>();
+        private List<uint> _levels;
+        private uint _maxLevel;
 
         public Board()
         {
             Reset();
         }
-        
+
         public void Reset()
         {
             _fields = new Fields(5, 5);
+            _levels = new List<uint> {0, 22, 18, 14, 18};
+            _maxLevel = 4;
         }
 
         public Guid AddPlayer(string name)
@@ -29,7 +35,8 @@ namespace Alkl.Thira
             return player.Id;
         }
 
-        public IEnumerable<Guid> PlaceInitialBuilders(Guid playerId, Position builder1Position, Position builder2Position)
+        public IEnumerable<Guid> PlaceInitialBuilders(Guid playerId, Position builder1Position,
+            Position builder2Position)
         {
             return new[]
             {
@@ -53,7 +60,7 @@ namespace Alkl.Thira
             return field.Builder.Id;
         }
 
-        public void MoveBuilder(Position from, Position to)
+        public void Move(Position from, Position to)
         {
             var fieldFrom = _fields[from];
             var fieldTo = _fields[to];
@@ -63,9 +70,9 @@ namespace Alkl.Thira
             {
                 builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo);
             }
-            catch (InvalidMoveException ex)
+            catch (MoveException ex)
             {
-                throw new Exception($"Invalid move from {from} to {to} for player {builder.Owner}: {ex.GetType().Name}", ex);
+                throw new InvalidMoveException(null, ex);
             }
 
             fieldTo.Builder = fieldFrom.Builder;
@@ -76,6 +83,17 @@ namespace Alkl.Thira
         {
             var builderField = _fields[builderPosition];
             var targetField = _fields[position];
+            var level = (int)targetField.Level;
+
+            if (targetField.Level.Equals(_maxLevel))
+            {
+                throw new MaximumStoryLevelReachedException();
+            }
+
+            if (_levels[level] == 0)
+            {
+                throw new StoryNotAvailableException();
+            }
 
             try
             {
@@ -83,10 +101,10 @@ namespace Alkl.Thira
             }
             catch (BuildException ex)
             {
-                throw new Exception($"Invalid build on {position} for player {builderField.Builder.Owner}: {ex.GetType().Name}", ex);
+                throw new InvalidBuildException(null, ex);
             }
 
-            targetField.IncreaseStoryLevel();
+            targetField.Level++;
         }
 
         public Guid? GetBuilderId(Position position)
@@ -97,6 +115,11 @@ namespace Alkl.Thira
         public Guid? GetPlayerId(Position position)
         {
             return _fields[position]?.Builder?.Owner.Id;
+        }
+
+        public uint? GetLevel(Position position)
+        {
+            return _fields[position]?.Level;
         }
 
         private Player GetPlayer(Guid id)

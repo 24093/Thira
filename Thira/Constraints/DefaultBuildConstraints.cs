@@ -1,5 +1,6 @@
 ﻿using Alkl.Thira.DomainObjects;
 using Alkl.Thira.Exceptions;
+using Alkl.Thira.Exceptions.BuildExceptions;
 
 namespace Alkl.Thira.Constraints
 {
@@ -10,9 +11,15 @@ namespace Alkl.Thira.Constraints
             CheckArguments(builderField, targetField);
 
             if (!builderField.Position.IsNeighbor(targetField.Position))
-            {
                 throw new TargetFieldIsNotNeighborOfBuilderFieldException(builderField, targetField);
-            }
+
+            if (targetField.Builder != null)
+                throw new TargetFieldContainsBuilderException(builderField, targetField);
+        }
+
+        public IBuildConstraints DeepClone()
+        {
+            return new DefaultBuildConstraints();
         }
 
         protected void CheckArguments(Field builderField, Field targetField)
@@ -22,11 +29,6 @@ namespace Alkl.Thira.Constraints
             if (targetField == null) throw new TargetFieldDoesNotExistException(builderField, null);
 
             if (targetField.Builder == null) throw new NoBuilderOnBuilderFieldException(builderField, targetField);
-        }
-
-        public IBuildConstraints DeepClone()
-        {
-            return new DefaultBuildConstraints();
         }
     }
 }

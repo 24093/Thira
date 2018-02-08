@@ -1,6 +1,7 @@
 ﻿using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
 using Alkl.Thira.Exceptions;
+using Alkl.Thira.Exceptions.BuildExceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Alkl.Thira.UnitTests

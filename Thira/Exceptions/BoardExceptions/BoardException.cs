@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Alkl.Thira.Exceptions
+namespace Alkl.Thira.Exceptions.BoardExceptions
 {
-    internal abstract class BoardException : InvalidOperationException
+    public abstract class BoardException : InvalidOperationException
     {
         protected BoardException(string message = null, Exception innerException = null)
             : base(message, innerException)

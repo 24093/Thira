@@ -1,7 +1,7 @@
 ﻿using System;
 using Alkl.Thira.DomainObjects;
 
-namespace Alkl.Thira.Exceptions
+namespace Alkl.Thira.Exceptions.BuildExceptions
 {
     internal class NoBuilderOnBuilderFieldException : BuildException
     {

@@ -35,10 +35,35 @@ namespace Alkl.Thira.UnitTests
         [TestMethod]
         public void TestMovement()
         {
-            _board.MoveBuilder((1, 2), (2, 2));
+            _board.Move((1, 2), (2, 2));
 
             Assert.IsNull(_board.GetBuilderId((1, 2)));
             Assert.IsNotNull(_board.GetBuilderId((2, 2)));
         }
+
+        [TestMethod]
+        public void TestBuilding()
+        {
+            Assert.ThrowsException<Exceptions.BuildExceptions.TargetFieldContainsBuilderException>(() =>
+                _board.Build((1, 2), (1, 3)));
+            Assert.AreEqual(0U, _board.GetLevel((1, 3)));
+
+            _board.Build((1, 2), (1, 1));
+            Assert.AreEqual(1U, _board.GetLevel((1, 1)));
+
+            _board.Build((1, 2), (1, 1));
+            Assert.AreEqual(2U, _board.GetLevel((1, 1)));
+
+            _board.Build((1, 2), (1, 1));
+            Assert.AreEqual(3U, _board.GetLevel((1, 1)));
+
+            _board.Build((1, 2), (1, 1));
+            Assert.AreEqual(4U, _board.GetLevel((1, 1)));
+
+            //Assert.ThrowsException<>(() =>
+            //    _board.Build((1, 2), (1, 1)));
+            //Assert.AreEqual(4U, _board.GetLevel((1, 1)));
+        }
+
     }
 }

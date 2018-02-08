@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Alkl.Thira.Exceptions
+namespace Alkl.Thira.Exceptions.BoardExceptions
 {
-    internal class FieldContainsBuilderException : BoardException
+    public class FieldContainsBuilderException : BoardException
     {
         public FieldContainsBuilderException(string message = null, Exception innerException = null)
             : base(message, innerException)
