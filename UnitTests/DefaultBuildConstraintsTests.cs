@@ -1,7 +1,5 @@
 ﻿using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions;
-using Alkl.Thira.Exceptions.BuildExceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Alkl.Thira.UnitTests
@@ -25,42 +23,45 @@ namespace Alkl.Thira.UnitTests
             _fields[3, 3].Builder = new Builder(_player2);
             _fields[2, 0].Builder = new Builder(_player2);
         }
-
-        #region Exceptions
-
+        
         [TestMethod]
-        public void TestBuilderFieldDoesNotExistException()
+        public void TestBuilderFieldDoesNotExistError()
         {
-            Assert.ThrowsException<BuilderFieldDoesNotExistException>(() =>
-                _player1.BuildConstraints.CheckBuild(null, _fields[1, 0]));
+            var result = _player1.BuildConstraints.CheckBuild(null, _fields[1, 0]);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CheckBuildError.BuilderFieldDoesNotExist, result.Error);
         }
 
         [TestMethod]
-        public void TestTargetFieldDoesNotExistException()
+        public void TestTargetFieldDoesNotExistError()
         {
-            Assert.ThrowsException<TargetFieldDoesNotExistException>(() =>
-                _player1.BuildConstraints.CheckBuild(_fields[0, 0], null));
+            var result = _player1.BuildConstraints.CheckBuild(_fields[0, 0], null);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CheckBuildError.TargetFieldDoesNotExist, result.Error);
         }
 
         [TestMethod]
-        public void TestNoBuilderOnBuilderFieldExceptionn()
+        public void TestNoBuilderOnBuilderFieldError()
         {
-            Assert.ThrowsException<NoBuilderOnBuilderFieldException>(() =>
-                _player1.BuildConstraints.CheckBuild(_fields[1, 1], _fields[1, 2]));
+            var result = _player1.BuildConstraints.CheckBuild(_fields[1, 1], _fields[1, 2]);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CheckBuildError.NoBuilderOnBuilderField, result.Error);
         }
 
         [TestMethod]
-        public void TestTargetFieldIsNotNeighborOfBuilderFieldException()
+        public void TestTargetFieldIsNotNeighborOfBuilderFieldError()
         {
-            Assert.Fail();
+            var result = _player1.BuildConstraints.CheckBuild(_fields[1, 0], _fields[4, 4]);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CheckBuildError.TargetFieldIsNotNeighborOfBuilderField, result.Error);
         }
 
         [TestMethod]
-        public void TestTargetFieldContainsBuilderException()
+        public void TestTargetFieldContainsBuilderError()
         {
-            Assert.Fail();
+            var result = _player1.BuildConstraints.CheckBuild(_fields[1, 0], _fields[2, 0]);
+            Assert.IsFalse(result.Success);
+            Assert.AreEqual(CheckBuildError.TargetFieldContainsBuilder, result.Error);
         }
-
-        #endregion
     }
 }

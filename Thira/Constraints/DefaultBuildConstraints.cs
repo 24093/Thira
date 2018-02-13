@@ -1,20 +1,23 @@
 ﻿using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions;
-using Alkl.Thira.Exceptions.BuildExceptions;
 
 namespace Alkl.Thira.Constraints
 {
     internal class DefaultBuildConstraints : IBuildConstraints
     {
-        public void CheckBuild(Field builderField, Field targetField)
+        public IResult<CheckBuildError> CheckBuild(Field builderField, Field targetField)
         {
-            CheckArguments(builderField, targetField);
+            var checkArgumentsResult = CheckArguments(builderField, targetField);
+
+            if (!checkArgumentsResult.Success)
+                return checkArgumentsResult;
 
             if (!builderField.Position.IsNeighbor(targetField.Position))
-                throw new TargetFieldIsNotNeighborOfBuilderFieldException(builderField, targetField);
+                return new CheckBuildResult(CheckBuildError.TargetFieldIsNotNeighborOfBuilderField);
 
             if (targetField.Builder != null)
-                throw new TargetFieldContainsBuilderException(builderField, targetField);
+                return new CheckBuildResult(CheckBuildError.TargetFieldContainsBuilder);
+
+            return new CheckBuildResult();
         }
 
         public IBuildConstraints DeepClone()
@@ -22,13 +25,15 @@ namespace Alkl.Thira.Constraints
             return new DefaultBuildConstraints();
         }
 
-        protected void CheckArguments(Field builderField, Field targetField)
+        protected CheckBuildResult CheckArguments(Field builderField, Field targetField)
         {
-            if (builderField == null) throw new BuilderFieldDoesNotExistException(null, targetField);
+            if (builderField == null) return CheckBuildError.BuilderFieldDoesNotExist;
 
-            if (builderField.Builder == null) throw new NoBuilderOnBuilderFieldException(builderField, targetField);
+            if (builderField.Builder == null) return CheckBuildError.NoBuilderOnBuilderField;
 
-            if (targetField == null) throw new TargetFieldDoesNotExistException(builderField, null);
+            if (targetField == null) return CheckBuildError.TargetFieldDoesNotExist;
+
+            return new CheckBuildResult();
         }
     }
 }

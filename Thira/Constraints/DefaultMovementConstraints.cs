@@ -1,19 +1,24 @@
 ﻿using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions;
-using Alkl.Thira.Exceptions.MoveExceptions;
 
 namespace Alkl.Thira.Constraints
 {
     internal class DefaultMovementConstraints : IMovementConstraints
     {
-        public virtual void CheckMove(Field fieldFrom, Field fieldTo)
+        public virtual IResult<CheckMoveError> CheckMove(Field fieldFrom, Field fieldTo)
         {
-            CheckArguments(fieldFrom, fieldTo);
+            var checkArgumentsResult = CheckArguments(fieldFrom, fieldTo);
+
+            if (!checkArgumentsResult.Success)
+            {
+                return checkArgumentsResult;
+            }
 
             if (!fieldFrom.Position.IsNeighbor(fieldTo.Position))
-                throw new DestinationFieldIsNotNeighborOfSourceFieldException(fieldFrom, fieldTo);
+                return new CheckMoveResult(CheckMoveError.DestinationFieldIsNotNeighborOfSourceField);
 
-            if (fieldTo.Builder != null) throw new DestinationFieldIsNotEmptyException(fieldFrom, fieldTo);
+            if (fieldTo.Builder != null) return new CheckMoveResult(CheckMoveError.DestinationFieldIsNotEmpty);
+
+            return new CheckMoveResult();
         }
 
         public IMovementConstraints DeepClone()
@@ -21,13 +26,15 @@ namespace Alkl.Thira.Constraints
             return new DefaultMovementConstraints();
         }
 
-        protected void CheckArguments(Field fieldFrom, Field fieldTo)
+        protected CheckMoveResult CheckArguments(Field fieldFrom, Field fieldTo)
         {
-            if (fieldFrom == null) throw new SourceFieldDoesNotExistException(null, fieldTo);
+            if (fieldFrom == null) return CheckMoveError.SourceFieldDoesNotExist;
 
-            if (fieldTo == null) throw new DestinationFieldDoesNotExistException(fieldFrom, null);
+            if (fieldTo == null) return CheckMoveError.DestinationFieldDoesNotExist;
 
-            if (fieldFrom.Builder == null) throw new NoBuilderOnSourceFieldException(fieldFrom, fieldTo);
+            if (fieldFrom.Builder == null) return CheckMoveError.NoBuilderOnSourceField;
+
+            return new CheckMoveResult();
         }
     }
 }

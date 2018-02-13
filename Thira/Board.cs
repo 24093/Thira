@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alkl.Thira.Constraints;
 using Alkl.Thira.DomainObjects;
-using Alkl.Thira.Exceptions.BoardExceptions;
-using Alkl.Thira.Exceptions.BuildExceptions;
-using Alkl.Thira.Exceptions.MoveExceptions;
+using Alkl.Thira.Exceptions;
 
 namespace Alkl.Thira
 {
@@ -18,15 +16,20 @@ namespace Alkl.Thira
         
         public Board()
         {
-            Reset();
+            Reset(5, 5, new List<uint> {0, 22, 18, 14, 18});
         }
 
-        public void Reset()
+        public Board(uint rows, uint columns, List<uint> levels)
+        {
+            Reset(rows, columns, levels);
+        }
+        
+        private void Reset(uint rows, uint columns, List<uint> levels)
         {
             _players = new List<Player>();
-            _fields = new Fields(5, 5);
-            _levels = new List<uint> {0, 22, 18, 14, 18};
-            _maxLevel = 4;
+            _fields = new Fields(rows, columns);
+            _levels = levels;
+            _maxLevel = (uint)_levels.Count - 1;
         }
 
         public Guid AddPlayer(string name)
@@ -67,13 +70,11 @@ namespace Alkl.Thira
             var fieldTo = _fields[to];
             var builder = _fields[from].Builder;
 
-            try
+            var checkMoveResult = builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo);
+
+            if (!checkMoveResult.Success)
             {
-                builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo);
-            }
-            catch (MoveException ex)
-            {
-                throw new InvalidMoveException(null, ex);
+                throw new InvalidMoveException(checkMoveResult.Error);
             }
 
             fieldTo.Builder = fieldFrom.Builder;
@@ -96,13 +97,11 @@ namespace Alkl.Thira
                 throw new LevelNotAvailableException();
             }
 
-            try
+            var checkBuildResult = builderField.Builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
+
+            if (!checkBuildResult.Success)
             {
-                builderField.Builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
-            }
-            catch (BuildException ex)
-            {
-                throw new InvalidBuildException(null, ex);
+                throw new InvalidBuildException(checkBuildResult.Error);
             }
 
             _levels[level + 1]--;
@@ -119,14 +118,40 @@ namespace Alkl.Thira
             return _fields[position]?.Builder?.Owner.Id;
         }
 
+        public IEnumerable<Guid> GetPlayerIds()
+        {
+            return _players.Select(p => p.Id);
+        }
+
         public uint? GetLevel(Position position)
         {
             return _fields[position]?.Level;
         }
 
-        private Player GetPlayer(Guid id)
+        public IEnumerable<Guid> GetBuilderIds(Guid playerId)
         {
-            return _players.SingleOrDefault(p => p.Id == id);
+            return _fields.Where(f => f.Builder?.Owner.Id == playerId).Select(f => f.Builder.Id);
+        }
+        
+        public IEnumerable<Position> GetPossibleMoves(Guid builderId)
+        {
+            var position = GetBuilderPosition(builderId);
+            return _fields.GetNeighbors(position);
+        }
+
+        public Position GetBuilderPosition(Guid builderId)
+        {
+            return _fields.SingleOrDefault(f => f.Builder?.Id == builderId)?.Position;
+        }
+
+        private Builder GetBuilder(Guid builderId)
+        {
+            return _fields.Where(f => f.Builder?.Id == builderId).Select(f => f.Builder).SingleOrDefault();
+        }
+
+        private Player GetPlayer(Guid playerId)
+        {
+            return _players.SingleOrDefault(p => p.Id == playerId);
         }
     }
 }

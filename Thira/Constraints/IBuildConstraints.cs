@@ -4,6 +4,6 @@ namespace Alkl.Thira.Constraints
 {
     internal interface IBuildConstraints : IDeepCloneable<IBuildConstraints>
     {
-        void CheckBuild(Field builderField, Field targetField);
+        IResult<CheckBuildError> CheckBuild(Field builderField, Field targetField);
     }
 }

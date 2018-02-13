@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Alkl.Thira.Exceptions.BoardExceptions
+namespace Alkl.Thira.Exceptions
 {
     public class MaximumNumberOfBuildersExceededException : BoardException
     {

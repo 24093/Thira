@@ -1,4 +1,6 @@
-﻿namespace Alkl.Thira.DomainObjects
+﻿using System.Collections.Generic;
+
+namespace Alkl.Thira.DomainObjects
 {
     public class Position : IDeepCloneable<Position>
     {
@@ -43,6 +45,18 @@
                 return false;
 
             return true;
+        }
+
+        public IEnumerable<Position> GetNeighbors()
+        {
+            yield return new Position(Row, Column + 1);
+            yield return new Position(Row + 1, Column + 1);
+            yield return new Position(Row + 1, Column);
+            yield return new Position(Row - 1, Column - 1);
+            yield return new Position(Row, Column - 1);
+            yield return new Position(Row - 1, Column - 1);
+            yield return new Position(Row - 1, Column);
+            yield return new Position(Row + 1, Column + 1);
         }
 
         public override bool Equals(object obj)

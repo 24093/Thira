@@ -25,6 +25,11 @@ namespace Alkl.Thira.DomainObjects
 
         public Field this[Position position] => this[position.Row, position.Column];
 
+        public IEnumerable<Position> GetNeighbors(Position position)
+        {
+            return position.GetNeighbors().Where(p => this[p] != null);
+        }
+
         public Fields DeepClone()
         {
             return new Fields(_fields.Select(f => f.DeepClone()));
