@@ -2,7 +2,7 @@
 
 namespace Alkl.Thira.Exceptions
 {
-    public abstract class BoardException<TError> : InvalidOperationException
+    public abstract class BoardException<TError> : BoardException
     {
         public TError Error { get; private set; }
 

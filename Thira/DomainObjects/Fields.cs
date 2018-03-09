@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Alkl.Thira.DomainObjects
 {
@@ -15,7 +16,7 @@ namespace Alkl.Thira.DomainObjects
                 _fields.Add(new Field((row, column)));
         }
 
-        protected Fields(IEnumerable<Field> fields)
+        private Fields(IEnumerable<Field> fields)
         {
             _fields = new List<Field>(fields);
         }
@@ -28,6 +29,11 @@ namespace Alkl.Thira.DomainObjects
         public IEnumerable<Position> GetNeighbors(Position position)
         {
             return position.GetNeighbors().Where(p => this[p] != null);
+        }
+
+        public IEnumerable<Field> GetFields(IEnumerable<Position> positions)
+        {
+            return positions.Select(p => this[p]).Where(f => f != null);
         }
 
         public Fields DeepClone()

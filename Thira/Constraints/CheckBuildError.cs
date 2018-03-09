@@ -7,6 +7,7 @@
         TargetFieldContainsBuilder,
         BuilderFieldDoesNotExist,
         NoBuilderOnBuilderField,
-        TargetFieldDoesNotExist
+        TargetFieldDoesNotExist,
+        TargetFieldIsBlocked
     }
 }

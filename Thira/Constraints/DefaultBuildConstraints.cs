@@ -4,7 +4,7 @@ namespace Alkl.Thira.Constraints
 {
     internal class DefaultBuildConstraints : IBuildConstraints
     {
-        public IResult<CheckBuildError> CheckBuild(Field builderField, Field targetField)
+        public IResult<CheckBuildError> CheckBuild(Field builderField, Field targetField, uint maxLevel)
         {
             var checkArgumentsResult = CheckArguments(builderField, targetField);
 
@@ -16,6 +16,9 @@ namespace Alkl.Thira.Constraints
 
             if (targetField.Builder != null)
                 return new CheckBuildResult(CheckBuildError.TargetFieldContainsBuilder);
+
+            if (targetField.Level == maxLevel)
+                return new CheckBuildResult(CheckBuildError.TargetFieldIsBlocked);
 
             return new CheckBuildResult();
         }

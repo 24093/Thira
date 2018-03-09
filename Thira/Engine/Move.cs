@@ -8,11 +8,13 @@ namespace Alkl.Thira.Engine
 
         public Position To;
 
+        public Position Build;
+
         public int Rating;
 
         public override string ToString()
         {
-            return $"{From} -> {To} [{Rating}]";
+            return $"{From} -> {To} & {Build} [{Rating}]";
         }
     }
 }

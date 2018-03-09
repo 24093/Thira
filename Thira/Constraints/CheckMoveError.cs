@@ -7,6 +7,7 @@
         DestinationFieldIsNotEmpty,
         SourceFieldDoesNotExist,
         DestinationFieldDoesNotExist,
-        NoBuilderOnSourceField
+        NoBuilderOnSourceField,
+        DestinationFieldIsBlocked
     }
 }

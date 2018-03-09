@@ -4,7 +4,7 @@ namespace Alkl.Thira.Constraints
 {
     internal class DefaultMovementConstraints : IMovementConstraints
     {
-        public virtual IResult<CheckMoveError> CheckMove(Field fieldFrom, Field fieldTo)
+        public virtual IResult<CheckMoveError> CheckMove(Field fieldFrom, Field fieldTo, uint maxLevel)
         {
             var checkArgumentsResult = CheckArguments(fieldFrom, fieldTo);
 
@@ -17,6 +17,8 @@ namespace Alkl.Thira.Constraints
                 return new CheckMoveResult(CheckMoveError.DestinationFieldIsNotNeighborOfSourceField);
 
             if (fieldTo.Builder != null) return new CheckMoveResult(CheckMoveError.DestinationFieldIsNotEmpty);
+
+            if (fieldTo.Level == maxLevel) return new CheckMoveResult(CheckMoveError.DestinationFieldIsBlocked);
 
             return new CheckMoveResult();
         }

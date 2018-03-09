@@ -21,5 +21,10 @@ namespace Alkl.Thira.DomainObjects
         {
             return new Builder(Owner.DeepClone(), Id);
         }
+
+        public override string ToString()
+        {
+            return $"{Owner.Name} {Id.ToString().Substring(0, 5)}";
+        }
     }
 }

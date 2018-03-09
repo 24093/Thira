@@ -7,7 +7,7 @@ using Alkl.Thira.Exceptions;
 
 namespace Alkl.Thira
 {
-    public class Board
+    public class Board : IDeepCloneable<Board>
     {
         private List<Player> _players = new List<Player>();
         private Fields _fields;
@@ -22,6 +22,14 @@ namespace Alkl.Thira
         public Board(uint rows, uint columns, List<uint> levels)
         {
             Reset(rows, columns, levels);
+        }
+
+        private Board(List<Player> players, Fields fields, List<uint> levels, uint maxLevel)
+        {
+            _players = players;
+            _fields = fields;
+            _levels = levels;
+            _maxLevel = maxLevel;
         }
         
         private void Reset(uint rows, uint columns, List<uint> levels)
@@ -70,7 +78,7 @@ namespace Alkl.Thira
             var fieldTo = _fields[to];
             var builder = _fields[from].Builder;
 
-            var checkMoveResult = builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo);
+            var checkMoveResult = builder.Owner.MovementConstraints.CheckMove(fieldFrom, fieldTo, _maxLevel);
 
             if (!checkMoveResult.Success)
             {
@@ -97,7 +105,8 @@ namespace Alkl.Thira
                 throw new LevelNotAvailableException();
             }
 
-            var checkBuildResult = builderField.Builder.Owner.BuildConstraints.CheckBuild(builderField, targetField);
+            var checkBuildResult =
+                builderField.Builder.Owner.BuildConstraints.CheckBuild(builderField, targetField, _maxLevel);
 
             if (!checkBuildResult.Success)
             {
@@ -139,9 +148,21 @@ namespace Alkl.Thira
             return _fields.GetNeighbors(position);
         }
 
+        public IEnumerable<Position> GetPossibleBuilds(Guid builderId)
+        {
+            var position = GetBuilderPosition(builderId);
+            var neighbors = _fields.GetNeighbors(position);
+            return _fields.GetFields(neighbors).Where(f => f.Level != _maxLevel).Select(f => f.Position);
+        }
+
         public Position GetBuilderPosition(Guid builderId)
         {
             return _fields.SingleOrDefault(f => f.Builder?.Id == builderId)?.Position;
+        }
+
+        public uint GetMaxLevel()
+        {
+            return _maxLevel;
         }
 
         private Builder GetBuilder(Guid builderId)
@@ -152,6 +173,15 @@ namespace Alkl.Thira
         private Player GetPlayer(Guid playerId)
         {
             return _players.SingleOrDefault(p => p.Id == playerId);
+        }
+        
+        public Board DeepClone()
+        {
+            return new Board(
+                new List<Player>(_players.Select(p => p.DeepClone())),
+                _fields.DeepClone(),
+                new List<uint>(_levels),
+                _maxLevel);
         }
     }
 }

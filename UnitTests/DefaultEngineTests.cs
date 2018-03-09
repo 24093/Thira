@@ -27,7 +27,7 @@ namespace Alkl.Thira.UnitTests
         public void Test1()
         {
             var engine = new DefaultEngine();
-            var ratings = engine.RateMoves(_board, _player1Id);
+            engine.Play(_board, _player1Id, _player2Id);
         }
     }
 }

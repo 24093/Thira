@@ -21,5 +21,10 @@
                 Level = Level
             };
         }
+
+        public override string ToString()
+        {
+            return $"{Position} - {Builder} - {Level}";
+        }
     }
 }

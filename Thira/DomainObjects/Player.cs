@@ -27,7 +27,7 @@ namespace Alkl.Thira.DomainObjects
 
         public Player DeepClone()
         {
-            return new Player(Name, MovementConstraints.DeepClone(), BuildConstraints.DeepClone(), Id);
+            return new Player(Name, MovementConstraints.DeepClone(), BuildConstraints.DeepClone(), Guid.Parse(Id.ToString()));
         }
 
         protected bool Equals(Player other)
